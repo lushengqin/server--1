@@ -97,7 +97,7 @@ btnXML.onclick = () => {
 //请求加载 JSON 文件
 const requestJSON = new XMLHttpRequest()
 btnJSON.onclick = () => {
-    requestJSON.open('GET', '5.json')
+    requestJSON.open('GET', '/5.json')
     requestJSON.onreadystatechange = () => {
         if (requestJSON.readyState === 4 && requestJSON.status >= 200 && requestJSON.status < 300) {
             console.log(typeof requestJSON.response)//打印出数据
@@ -112,7 +112,26 @@ btnJSON.onclick = () => {
     requestJSON.send()
 }
 
-
+//点击getPage按钮加载下一页
+let n =1
+getPage.onclick = () => {
+    requestJSON.open('GET', `/page${n+1}.json`)
+    requestJSON.onreadystatechange = () => {
+        if (requestJSON.readyState === 4 && requestJSON.status >= 200 && requestJSON.status < 300) {
+            const array = JSON.parse(requestJSON.response)
+            console.log(typeof array)
+            console.log(array)
+            const result = array.map(item => {
+                // console.log(item.id)
+                const li = document.createElement('li')
+                li.textContent = item.id
+                ulS.appendChild(li)
+            })
+            n+=1
+        }
+    }
+    requestJSON.send()
+}
 
 
 
